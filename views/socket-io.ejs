@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+</head>
+<body>
+<h1><%= title %></h1>
+
+<p>Welcome to <%= title %></p>
+
+<input type="text" name="words" id="words"/>
+
+<input type="button" value="提交" id="submit"/>
+<script src="/public/javascripts/lib/socket.io.min.js"></script>
+<script>
+    var chat = io.connect("http://localhost:3000/chat");
+    chat.on("connect", function () {
+        alert("connected");
+        var btn = document.getElementById("submit");
+        btn.onclick = function () {
+            chat.emit("leavemessage", document.getElementById("words").value)
+        }
+    })
+
+    chat.on("message", function (data) {
+        alert(data);
+    })
+
+    chat.on("user connected", function (data) {
+        alert(data);
+    })
+
+    chat.on("broadcast", function (data) {
+        alert(data);
+    })
+</script>
+</body>
+</html>

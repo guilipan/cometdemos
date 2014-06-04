@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+<body>
+<h1><%= title %></h1>
+<p>Welcome to <%= title %></p>
+<script>
+    function xhrstream(url,callback){
+        var xhr=new XMLHttpRequest();
+        var lastsize;
+        xhr.onreadystatechange=function(){
+            var newReceivedText;
+            if(xhr.readyState>2){
+                newReceivedText=xhr.responseText.substr(lastsize);
+                lastsize=xhr.responseText.length;
+                callback(newReceivedText);
+                callback("\r\n"+"chunked data"+"\r\n");
+            }
+            if(xhr.readyState==4){
+                //xhrstream(url,callback);
+            }
+        }
+        xhr.open("GET",url,true);
+        xhr.send(null);
+    }
+
+    xhrstream("/comet/xhrstream",function(data){
+        document.body.appendChild(document.createTextNode(data));
+    })
+</script>
+</body>
+</html>

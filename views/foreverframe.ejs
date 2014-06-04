@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+<body>
+<h1><%= title %></h1>
+<p>Welcome to <%= title %></p>
+<script>
+
+    function foreverframe(url,callback){
+        var iframe=document.body.appendChild(document.createElement("iframe"));
+        iframe.style.display="none";
+        iframe.src=url+"?"+"callback=parent.foreverframe.callback";
+        arguments.callee.callback=callback;
+
+    }
+
+    foreverframe("/comet/foreverframe",function(data){
+        document.body.appendChild(document.createTextNode(data))
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+<body>
+<h1><%= title %></h1>
+<p>Welcome to <%= title %></p>
+<script>
+
+    function longPolling(url,callback){
+        var xhr=new XMLHttpRequest();
+        xhr.onreadystatechange=function(){
+            if(xhr.readyState==4){
+                callback(xhr.responseText);
+                xhr.open("GET",url,true);
+                xhr.send(null);
+            }
+        }
+        xhr.open("GET",url,true);
+        xhr.send(null);
+    }
+
+    longPolling("/comet/longpolling",function(data){
+        var textnode=document.createTextNode(data);
+        document.body.appendChild(textnode);
+    })
+</script>
+</body>
+</html>
